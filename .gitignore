@@ -1,9 +1,16 @@
-.class
+# Maven
+target/
+*.releaseBackup
+release.properties
+
+# Eclipse
 .classpath
 .project
 .settings
-target/
-*/*.iml
+
+# IntelliJ IDEA
 *.iml
-*.releaseBackup
-release.properties
+.idea/
+
+# Other
+.class
