@@ -113,7 +113,11 @@ public class AjdtProjectConfiguratorTest extends AbstractMavenProjectTestCase {
     String[] aspectPath = AspectJCorePreferences.getResolvedProjectAspectPath(project);
     assertEquals("The result of getResolvedProjectAspectPath is always an array of length 3", 3, aspectPath.length);
     assertTrue(aspectPath[0], aspectPath[0].contains("/maven-core-"));
-    assertEquals("Should be one segment of this aspect path", aspectPath[0].length()-1, aspectPath[0].indexOf(':'));
+    assertEquals(
+      "Should be one segment of this aspect path",
+      aspectPath[0].length()-1,
+      aspectPath[0].indexOf(System.getProperty("path.separator"))
+    );
     assertTrue("Content kind should be BINARY",aspectPath[1].startsWith("2")); //$NON-NLS-1$ //$NON-NLS-2$
     assertTrue("Entry kind should be LIBRARY", aspectPath[2].startsWith("1")); //$NON-NLS-1$ //$NON-NLS-2$
   }
@@ -139,7 +143,11 @@ public class AjdtProjectConfiguratorTest extends AbstractMavenProjectTestCase {
     String[] aspectPath = AspectJCorePreferences.getResolvedProjectAspectPath(project);
     assertEquals("The result of getResolvedProjectAspectPath is always an array of length 3", 3, aspectPath.length);
     assertTrue(aspectPath[0].contains("/maven-core-"));
-    assertEquals("Should be one segment of this aspect path", aspectPath[0].length()-1, aspectPath[0].indexOf(':'));
+    assertEquals(
+      "Should be one segment of this aspect path",
+      aspectPath[0].length()-1,
+      aspectPath[0].indexOf(System.getProperty("path.separator"))
+    );
     assertTrue("Content kind should be BINARY",aspectPath[1].startsWith("2")); //$NON-NLS-1$ //$NON-NLS-2$
     assertTrue("Entry kind should be LIBRARY", aspectPath[2].startsWith("1")); //$NON-NLS-1$ //$NON-NLS-2$
   }
