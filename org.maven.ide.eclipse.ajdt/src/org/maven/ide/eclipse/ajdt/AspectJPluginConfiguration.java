@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
 package org.maven.ide.eclipse.ajdt;
@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
    &lt;/plugin&gt;
  * </pre>
  *
- * @see "http://mojo.codehaus.org/aspectj-maven-plugin/compile-mojo.html"
+ * @see "https://mojo.codehaus.org/aspectj-maven-plugin/compile-mojo.html"
  * @author Igor Fedorenko
  * @author Eugene Kuleshov
  */

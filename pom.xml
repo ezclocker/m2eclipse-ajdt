@@ -2,7 +2,7 @@
 <!-- Copyright (c) 2008 Sonatype, Inc. All rights reserved. This program
 	and the accompanying materials are made available under the terms of the
 	Eclipse Public License v1.0 which accompanies this distribution, and is available
-	at http://www.eclipse.org/legal/epl-v10.html -->
+	at https://www.eclipse.org/legal/epl-v10.html -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -41,12 +41,12 @@
 		<pluginRepository>
 			<id>spring-maven-release</id>
 			<name>Spring Maven Release Repository</name>
-			<url>http://maven.springframework.org/release</url>
+			<url>https://maven.springframework.org/release</url>
 		</pluginRepository>
 		<pluginRepository>
 			<id>springsource-maven-release</id>
 			<name>SpringSource Maven Release Repository</name>
-			<url>http://repository.springsource.com/maven/bundles/release</url>
+			<url>https://repository.springsource.com/maven/bundles/release</url>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -59,7 +59,7 @@
 		<tycho-version>2.2.0</tycho-version>
 		<!-- <m2eclipse-core.version>0.10.2.20100623-1649</m2eclipse-core.version> -->
 		<!-- <m2eclipse-core.site>0.10.2/S/${m2eclipse-core.version}</m2eclipse-core.site> -->
-		<!-- <m2e.site-compressed>http://repository.sonatype.org/service/local/repositories/forge-sites/content-compressed/</m2e.site-compressed> -->
+		<!-- <m2e.site-compressed>https://repository.sonatype.org/service/local/repositories/forge-sites/content-compressed/</m2e.site-compressed> -->
 
 		<!-- Signing -->
 		<signing.skip>true</signing.skip>
@@ -162,7 +162,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<!-- http://maven.apache.org/plugins/maven-compiler-plugin/ -->
+					<!-- https://maven.apache.org/plugins/maven-compiler-plugin/ -->
 					<source>1.11</source>
 					<target>1.11</target>
 					<release>11</release>
@@ -203,7 +203,7 @@
 			<activation>
 				<property>
 					<name>java.vendor.url</name>
-					<value>http://java.sun.com/</value>
+					<value>https://java.sun.com/</value>
 				</property>
 			</activation>
 			<properties>
@@ -215,7 +215,7 @@
 			<activation>
 				<property>
 					<name>java.vendor.url</name>
-					<value>http://www.apple.com/</value>
+					<value>https://www.apple.com/</value>
 				</property>
 			</activation>
 			<properties>
