@@ -14,8 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecution;
+import org.apache.maven.project.MavenProject;
 import org.eclipse.ajdt.core.AspectJCorePreferences;
 import org.eclipse.ajdt.core.AspectJPlugin;
 import org.eclipse.core.resources.IProject;
@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
-import org.eclipse.m2e.jdt.AbstractJavaProjectConfigurator;
+import org.eclipse.m2e.jdt.internal.AbstractJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * Configures AJDT project according to aspectj-maven-plugin configuration from pom.xml. Work in progress, most of
  * aspectj-maven-plugin configuration parameters is not supported yet.
  *
- * @see "http://mojo.codehaus.org/aspectj-maven-plugin/compile-mojo.html"
+ * @see "https://mojo.codehaus.org/aspectj-maven-plugin/compile-mojo.html"
  * @see "https://bugs.eclipse.org/bugs/show_bug.cgi?id=160393"
  * @author Igor Fedorenko
  * @author Eugene Kuleshov
@@ -64,18 +64,23 @@ public class AjdtProjectConfigurator extends AbstractJavaProjectConfigurator {
 
   @Override
   public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-    IProject project = request.getProject();
+    IProject project = request.mavenProjectFacade().getProject();
 
     configureNature(project, monitor);
   }
 
   @Override
   public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor)
-      throws CoreException {
+      /*throws CoreException*/ {
     IProject project = facade.getProject();
     // TODO cache in facade.setSessionProperty
-    AspectJPluginConfiguration config = AspectJPluginConfiguration.create( //
-        facade.getMavenProject(monitor), project);
+    AspectJPluginConfiguration config = null;
+    try {
+      config = AspectJPluginConfiguration.create(facade.getMavenProject(monitor), project);
+    }
+    catch (CoreException coreException) {
+      log.error("Failed to determine AspectJ plugin configuration, defaulting to empty", coreException);
+    }
     if(config != null) {
       for(IClasspathEntryDescriptor descriptor : classpath.getEntryDescriptors()) {
         String key = descriptor.getGroupId() + ":" + descriptor.getArtifactId();
@@ -100,7 +105,7 @@ public class AjdtProjectConfigurator extends AbstractJavaProjectConfigurator {
       throws CoreException {
     List<MojoExecution> execs = new ArrayList<>();
     for(String groupId : COMPILER_PLUGIN_GROUP_IDS) {
-      execs.addAll(request.getMavenProjectFacade().getMojoExecutions(groupId, COMPILER_PLUGIN_ARTIFACT_ID, monitor,
+      execs.addAll(request.mavenProjectFacade().getMojoExecutions(groupId, COMPILER_PLUGIN_ARTIFACT_ID, monitor,
           GOAL_COMPILE, GOAL_TESTCOMPILE));
     }
     return execs;
@@ -133,7 +138,7 @@ public class AjdtProjectConfigurator extends AbstractJavaProjectConfigurator {
       IProgressMonitor monitor) throws CoreException {
     SubMonitor mon = SubMonitor.convert(monitor, 6);
 
-    IMavenProjectFacade facade = request.getMavenProjectFacade();
+    IMavenProjectFacade facade = request.mavenProjectFacade();
 
     IPath[] inclusion = new IPath[0];
     IPath[] exclusion = new IPath[0];
@@ -146,21 +151,21 @@ public class AjdtProjectConfigurator extends AbstractJavaProjectConfigurator {
 //    String mainSourceEncoding = null;
 //    String testSourceEncoding = null;
 
-    MavenSession mavenSession = request.getMavenSession();
+    MavenProject mavenProject = request.mavenProject();
 
     List<MojoExecution> executions = getCompilerMojoExecutions(request, mon.newChild(1));
     for(MojoExecution compile : executions) {
       if(isCompileExecution(compile)) {
-//        mainSourceEncoding = maven.getMojoParameterValue(mavenSession, compile, "encoding", String.class); //$NON-NLS-1$
+//        mainSourceEncoding = maven.getMojoParameterValue(mavenProject, compile, "encoding", String.class, monitor); //$NON-NLS-1$
         try {
           inclusion = toPaths(
-              maven.getMojoParameterValue(mavenSession, compile, "includes", String[].class)); //$NON-NLS-1$
+              maven.getMojoParameterValue(mavenProject, compile, "includes", String[].class, monitor)); //$NON-NLS-1$
         } catch(CoreException ex) {
           log.error("Failed to determine compiler inclusions, assuming defaults", ex);
         }
         try {
           exclusion = toPaths(
-              maven.getMojoParameterValue(mavenSession, compile, "excludes", String[].class)); //$NON-NLS-1$
+              maven.getMojoParameterValue(mavenProject, compile, "excludes", String[].class, monitor)); //$NON-NLS-1$
         } catch(CoreException ex) {
           log.error("Failed to determine compiler exclusions, assuming defaults", ex);
         }
@@ -168,29 +173,27 @@ public class AjdtProjectConfigurator extends AbstractJavaProjectConfigurator {
 
       // we are not supporting test folders
 //      if(isTestCompileExecution(compile)) {
-//        testSourceEncoding = maven.getMojoParameterValue(mavenSession, compile, "encoding", String.class); //$NON-NLS-1$
+//        testSourceEncoding = maven.getMojoParameterValue(mavenProject, compile, "encoding", String.class, monitor); //$NON-NLS-1$
 //        try {
-//          inclusionTest = toPaths(maven.getMojoParameterValue(request.getMavenSession(), compile,
-//              "testIncludes", String[].class)); //$NON-NLS-1$
+//          inclusionTest = toPaths(maven.getMojoParameterValue(mavenProject, compile, "testIncludes", String[].class, monitor)); //$NON-NLS-1$
 //        } catch(CoreException ex) {
 //          log.error("Failed to determine compiler test inclusions, assuming defaults", ex);
 //        }
 //        try {
-//          exclusionTest = toPaths(maven.getMojoParameterValue(request.getMavenSession(), compile,
-//              "testExcludes", String[].class)); //$NON-NLS-1$
+//          exclusionTest = toPaths(maven.getMojoParameterValue(mavenProject, compile, "testExcludes", String[].class, monitor)); //$NON-NLS-1$
 //        } catch(CoreException ex) {
 //          log.error("Failed to determine compiler test exclusions, assuming defaults", ex);
 //        }
 //      }
     }
 
-    assertHasNature(request.getProject(), JavaCore.NATURE_ID);
+    assertHasNature(request.mavenProjectFacade().getProject(), JavaCore.NATURE_ID);
 
     for(MojoExecution mojoExecution : getMojoExecutions(request, monitor)) {
-      File[] sources = getSourceFolders(request, mojoExecution);
+      File[] sources = getSourceFolders(request, mojoExecution, monitor);
 
       for(File source : sources) {
-        IPath sourcePath = getFullPath(facade, source);
+        IPath sourcePath = facade.getFullPath(source);
 
         if(sourcePath != null) {
           classpath.addSourceEntry(sourcePath, facade.getOutputLocation(), inclusion, exclusion, true);
@@ -199,16 +202,18 @@ public class AjdtProjectConfigurator extends AbstractJavaProjectConfigurator {
     }
   }
 
-  @Override
-  protected File[] getSourceFolders(ProjectConfigurationRequest request, MojoExecution mojoExecution)
+  // TODO: Where was this formerly protected method used in the old parent class? What is being used instead now?
+//  @Override
+  protected File[] getSourceFolders(ProjectConfigurationRequest request, MojoExecution mojoExecution, IProgressMonitor monitor)
       throws CoreException {
 
     // note: don't check for the aj nature here since this method may be called before the configure method.
     File[] sourceFolders = new File[0];
-    File value = getParameterValue("aspectDirectory", File.class, request.getMavenSession(), mojoExecution);
+    MavenProject mavenProject = request.mavenProject();
+    File value = maven.getMojoParameterValue(mavenProject, mojoExecution, "aspectDirectory", File.class, monitor);
     if(value != null) {
-      IMavenProjectFacade facade = request.getMavenProjectFacade();
-      IPath path = getFullPath(facade, value);
+      IMavenProjectFacade facade = request.mavenProjectFacade();
+      IPath path = facade.getFullPath(value);
       if(value.exists()) {
         log.info("Found aspect source folder " + path);
         sourceFolders = new File[] {value};

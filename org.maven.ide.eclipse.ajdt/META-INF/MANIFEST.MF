@@ -9,9 +9,9 @@ Require-Bundle: org.eclipse.ajdt.core;bundle-version="2.0.0",
  org.eclipse.jdt.core,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- org.eclipse.m2e.core;bundle-version="1.0.0",
- org.eclipse.m2e.maven.runtime;bundle-version="1.0.0",
- org.eclipse.m2e.jdt;bundle-version="1.0.0",
- org.slf4j.api;bundle-version="1.6.1"
+ org.eclipse.m2e.core,
+ org.eclipse.m2e.maven.runtime,
+ org.eclipse.m2e.jdt
+Import-Package: org.slf4j
 Bundle-Vendor: Sonatype, Inc.
 Export-Package: org.maven.ide.eclipse.ajdt
