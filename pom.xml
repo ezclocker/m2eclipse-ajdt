@@ -20,9 +20,9 @@
 			<url>http://repository.sonatype.org/content/groups/sonatype-public-grid</url>
 		</repository>
 		<repository>
-			<id>eclipse-2020-12</id>
+			<id>eclipse-2022-12</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/2020-12</url>
+			<url>http://download.eclipse.org/releases/2022-12</url>
 		</repository>
 		<repository>
 			<id>m2e</id>
@@ -56,7 +56,7 @@
   </scm>
 
 	<properties>
-		<tycho-version>2.2.0</tycho-version>
+		<tycho-version>2.7.5</tycho-version>
 		<!-- <m2eclipse-core.version>0.10.2.20100623-1649</m2eclipse-core.version> -->
 		<!-- <m2eclipse-core.site>0.10.2/S/${m2eclipse-core.version}</m2eclipse-core.site> -->
 		<!-- <m2e.site-compressed>http://repository.sonatype.org/service/local/repositories/forge-sites/content-compressed/</m2e.site-compressed> -->
@@ -163,9 +163,9 @@
 				<version>3.8.1</version>
 				<configuration>
 					<!-- http://maven.apache.org/plugins/maven-compiler-plugin/ -->
-					<source>1.11</source>
+					<source>1.17</source>
 					<target>1.11</target>
-					<release>11</release>
+					<release>17</release>
 				</configuration>
 			</plugin>
 			<plugin>
