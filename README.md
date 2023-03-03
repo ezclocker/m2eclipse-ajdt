@@ -17,11 +17,11 @@ I need this plugin for work stuff and plan to maintain its compatiblity with Ecl
 If you find this plugin useful, you are free to use and distribute it according to the original license.
 
 ## Build
-Use Java version 11 to build this plugin (if you use other version, build will fail because MANIFEST.MF has required version set to JavaSE-11)
+Use Java version 17 to build this plugin (if you use other version, build will fail because MANIFEST.MF has required version set to JavaSE-17)
 ```sh
 mvn clean package
 # or use specific java installation
-JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64 mvn clean package
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64 mvn clean package
 ```
 This build produces Eclipse update site to folder `org.maven.ide.eclipse.ajdt.site/target/site`. You can simply copy everything in that directory and host it with
 any http server you want and then install the artifacts from that site with Eclipse.
@@ -54,5 +54,6 @@ Eclipse update site URLs:
 | --------------- | ---------------- |
 | 2019-06         | https://repo.t5.fi/public/eclipse/m2eclipse-ajdt/eclipse-2019-06/ |
 | 2020-12         | https://repo.t5.fi/public/eclipse/m2eclipse-ajdt/eclipse-2020-12/ |
+| 2022-12         | https://repo.t5.fi/public/eclipse/m2eclipse-ajdt/eclipse-2022-12/ |
 
 These update sites are provided on best-effort basis but availability is generally good.
