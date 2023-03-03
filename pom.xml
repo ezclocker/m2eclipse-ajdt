@@ -32,7 +32,7 @@
 		<repository>
 			<id>ajdt</id>
 			<layout>p2</layout>
-			<url>https://download.eclipse.org/tools/ajdt/410/dev/update</url>
+			<url>https://download.eclipse.org/tools/ajdt/426/dev/update</url>
 		</repository>
 	</repositories>
 
