@@ -78,17 +78,22 @@ public class AjdtProjectConfigurator extends AbstractProjectConfigurator impleme
     AspectJPluginConfiguration config = AspectJPluginConfiguration.create( //
         facade.getMavenProject(monitor), project);
     if(config != null) {
+      Set<String> aspectLibraries = config.getAspectLibraries(); // from pom.xml
+      log.info("Configuring aspect libraries: {}", aspectLibraries);
+      Set<String> inpathDependencies = config.getInpathDependencies();
+      log.info("Configuring inpath dependencies: {}", inpathDependencies);
       for(IClasspathEntryDescriptor descriptor : classpath.getEntryDescriptors()) {
         String key = descriptor.getGroupId() + ":" + descriptor.getArtifactId();
-        Set<String> aspectLibraries = config.getAspectLibraries(); // from pom.xml
         if(aspectLibraries != null && aspectLibraries.contains(key)) {
+          log.info("Found aspect library match: {}", key);
           //descriptor.addClasspathAttribute(AspectJCorePreferences.ASPECTPATH_ATTRIBUTE);
           descriptor.getClasspathAttributes().put(AspectJCorePreferences.ASPECTPATH_ATTRIBUTE_NAME,
               AspectJCorePreferences.ASPECTPATH_ATTRIBUTE_NAME);
           continue;
         }
-        Set<String> inpathDependencies = config.getInpathDependencies();
+       
         if(inpathDependencies != null && inpathDependencies.contains(key)) {
+          log.info("Found inpath dependency match: {}", key);
           //descriptor.addClasspathAttribute(AspectJCorePreferences.INPATH_ATTRIBUTE);
           descriptor.getClasspathAttributes().put(AspectJCorePreferences.INPATH_ATTRIBUTE_NAME,
               AspectJCorePreferences.INPATH_ATTRIBUTE_NAME);
