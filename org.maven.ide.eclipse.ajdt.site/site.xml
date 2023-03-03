@@ -3,7 +3,7 @@
    <description url="http://github.com/cheleb/m2e-settings/">
       Maven Integration for Eclipse Extras
    </description>
-   <feature url="features/org.maven.ide.eclipse.ajdt.feature_0.14.5.qualifier.jar" id="org.maven.ide.eclipse.ajdt.feature" version="0.14.5.qualifier">
+   <feature url="features/org.maven.ide.eclipse.ajdt.feature_0.14.5.jar" id="org.maven.ide.eclipse.ajdt.feature" version="0.14.5">
       <category name="org.eclipse.m2e.ajdt.feature"/>
    </feature>
    <category-def name="org.eclipse.m2e.ajdt.feature" label="AJDT M2E configurator"/>

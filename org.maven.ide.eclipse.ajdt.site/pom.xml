@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.maven.ide.eclipse.ajdt</groupId>
 		<artifactId>org.maven.ide.eclipse.ajdt.parent</artifactId>
-		<version>0.14.5-SNAPSHOT</version>
+		<version>0.14.5</version>
         <relativePath>../pom.xml</relativePath>
 	</parent>
 	
