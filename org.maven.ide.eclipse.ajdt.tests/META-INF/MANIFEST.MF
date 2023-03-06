@@ -13,13 +13,12 @@ Require-Bundle: org.junit,
  org.eclipse.core.resources,
  org.eclipse.ajdt.core,
  org.eclipse.jdt.core,
- org.eclipse.m2e.core;bundle-version="1.0.0",
- org.eclipse.m2e.tests.common;bundle-version="1.0.0",
- org.eclipse.ajdt.ui;bundle-version="2.0.0",
+ org.eclipse.m2e.core,
+ org.eclipse.m2e.tests.common,
+ org.eclipse.ajdt.ui,
  org.eclipse.ui
 Eclipse-BundleShape: dir
 Import-Package: org.junit;version="4.12.0",
  org.junit.jupiter.api;version="5.0.0",
  org.slf4j,
  org.slf4j.impl
-

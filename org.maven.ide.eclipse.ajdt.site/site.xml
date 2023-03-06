@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description url="http://github.com/cheleb/m2e-settings/">
+   <description url="https://github.com/cheleb/m2e-settings/">
       Maven Integration for Eclipse Extras
    </description>
    <feature url="features/org.maven.ide.eclipse.ajdt.feature_0.14.6.qualifier.jar" id="org.maven.ide.eclipse.ajdt.feature" version="0.14.6.qualifier">

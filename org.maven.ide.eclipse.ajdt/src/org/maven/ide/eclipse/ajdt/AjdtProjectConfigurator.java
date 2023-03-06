@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
 package org.maven.ide.eclipse.ajdt;
@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * Configures AJDT project according to aspectj-maven-plugin configuration from pom.xml. Work in progress, most of
  * aspectj-maven-plugin configuration parameters is not supported yet.
  *
- * @see "http://mojo.codehaus.org/aspectj-maven-plugin/compile-mojo.html"
+ * @see "https://mojo.codehaus.org/aspectj-maven-plugin/compile-mojo.html"
  * @see "https://bugs.eclipse.org/bugs/show_bug.cgi?id=160393"
  * @author Igor Fedorenko
  * @author Eugene Kuleshov
@@ -56,7 +56,7 @@ public class AjdtProjectConfigurator extends AbstractProjectConfigurator impleme
 
   public static final String COMPILER_PLUGIN_ARTIFACT_ID = "aspectj-maven-plugin";
 
-  protected static final List<String> COMPILER_PLUGIN_GROUP_IDS = Arrays.asList("org.codehaus.mojo", "com.nickwongdev",
+  public static final List<String> COMPILER_PLUGIN_GROUP_IDS = Arrays.asList("org.codehaus.mojo", "com.nickwongdev",
       "com.github.m50d", "se.haleby.aspectj", "io.starter", "dev.aspectj");
 
   protected static final List<String> SOURCES = Arrays.asList("1.1,1.2,1.3,1.4,1.5,5,1.6,6,1.7,7".split(",")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -72,11 +72,16 @@ public class AjdtProjectConfigurator extends AbstractProjectConfigurator impleme
 
   @Override
   public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor)
-      throws CoreException {
+      /*throws CoreException*/ {
     IProject project = facade.getProject();
     // TODO cache in facade.setSessionProperty
-    AspectJPluginConfiguration config = AspectJPluginConfiguration.create( //
-        facade.getMavenProject(monitor), project);
+    AspectJPluginConfiguration config = null;
+    try {
+      config = AspectJPluginConfiguration.create(facade.getMavenProject(monitor), project);
+    }
+    catch (CoreException coreException) {
+      log.error("Failed to determine AspectJ plugin configuration, defaulting to empty", coreException);
+    }
     if(config != null) {
       Set<String> aspectLibraries = config.getAspectLibraries(); // from pom.xml
       log.info("Configuring aspect libraries: {}", aspectLibraries);
@@ -157,7 +162,7 @@ public class AjdtProjectConfigurator extends AbstractProjectConfigurator impleme
     List<MojoExecution> executions = getCompilerMojoExecutions(request, mon.newChild(1));
     for(MojoExecution compile : executions) {
       if(isCompileExecution(compile)) {
-//        mainSourceEncoding = maven.getMojoParameterValue(mavenSession, compile, "encoding", String.class); //$NON-NLS-1$
+//        mainSourceEncoding = maven.getMojoParameterValue(mavenProject, compile, "encoding", String.class, monitor); //$NON-NLS-1$
         try {
           inclusion = toPaths(
               maven.getMojoParameterValue(mavenProject, compile, "includes", String[].class, monitor)); //$NON-NLS-1$
@@ -174,16 +179,14 @@ public class AjdtProjectConfigurator extends AbstractProjectConfigurator impleme
 
       // we are not supporting test folders
 //      if(isTestCompileExecution(compile)) {
-//        testSourceEncoding = maven.getMojoParameterValue(mavenSession, compile, "encoding", String.class); //$NON-NLS-1$
+//        testSourceEncoding = maven.getMojoParameterValue(mavenProject, compile, "encoding", String.class, monitor); //$NON-NLS-1$
 //        try {
-//          inclusionTest = toPaths(maven.getMojoParameterValue(request.getMavenSession(), compile,
-//              "testIncludes", String[].class)); //$NON-NLS-1$
+//          inclusionTest = toPaths(maven.getMojoParameterValue(mavenProject, compile, "testIncludes", String[].class, monitor)); //$NON-NLS-1$
 //        } catch(CoreException ex) {
 //          log.error("Failed to determine compiler test inclusions, assuming defaults", ex);
 //        }
 //        try {
-//          exclusionTest = toPaths(maven.getMojoParameterValue(request.getMavenSession(), compile,
-//              "testExcludes", String[].class)); //$NON-NLS-1$
+//          exclusionTest = toPaths(maven.getMojoParameterValue(mavenProject, compile, "testExcludes", String[].class, monitor)); //$NON-NLS-1$
 //        } catch(CoreException ex) {
 //          log.error("Failed to determine compiler test exclusions, assuming defaults", ex);
 //        }
@@ -196,7 +199,7 @@ public class AjdtProjectConfigurator extends AbstractProjectConfigurator impleme
       File[] sources = getSourceFolders(request, mojoExecution, monitor);
 
       for(File source : sources) {
-        IPath sourcePath = getFullPath(facade, source);
+        IPath sourcePath = facade.getFullPath(source);
 
         if(sourcePath != null) {
           classpath.addSourceEntry(sourcePath, facade.getOutputLocation(), inclusion, exclusion, true);

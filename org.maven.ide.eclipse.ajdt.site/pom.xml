@@ -6,16 +6,16 @@
 		<version>0.14.6-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
 	</parent>
-	
+
 	<packaging>eclipse-update-site</packaging>
-	
+
 	<groupId>org.maven.ide.eclipse.ajdt.site</groupId>
 	<artifactId>org.maven.ide.eclipse.ajdt.site</artifactId>
 
 	<properties>
 		<dist.accessKey>${accessKey}</dist.accessKey>
 		<dist.secretKey>${secretKey}</dist.secretKey>
-	</properties>  
+	</properties>
 
 	<build>
 		<plugins>
@@ -33,6 +33,11 @@
 				<!-- </execution> -->
 				<!-- </executions> -->
 				<configuration>
+					<!--
+						TODO:
+						  These parameters are from Tycho p2 Metadata Plugin, not from Tycho OSGi Packaging Plugin, see
+						  https://www.eclipse.org/tycho/sitedocs/tycho-p2/tycho-p2-plugin/update-site-p2-metadata-mojo.html
+					-->
 					<metadataRepositoryName>Maven Integration for Eclipse Settings</metadataRepositoryName>
 					<artifactRepositoryName>Maven Integration for Eclipse Settings</artifactRepositoryName>
 				</configuration>
