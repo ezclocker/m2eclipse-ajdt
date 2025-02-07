@@ -10,7 +10,7 @@
       <name>AspectJ</name>
       <provider>SpringSource</provider>
       <p2>
-        <repositoryUrl>http://dist.springsource.org/release/AJDT/composite/</repositoryUrl>
+        <repositoryUrl>https://dist.springsource.org/release/AJDT/composite/</repositoryUrl>
         <iuId>org.maven.ide.eclipse.ajdt.feature.feature.group</iuId>
         <iuVersion>0.13.0.201107281640</iuVersion>
         <lifecycleMappingIU>
@@ -19,7 +19,7 @@
       </p2>
       <overview>
         <summary>Maven Integration for AspectJ Development Tools</summary>
-        <url>http://eclipse.org/ajdt</url>
+        <url>https://eclipse.org/ajdt</url>
       </overview>
     </catalogItem>
   </catalogItems>
